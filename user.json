@@ -1,0 +1,18 @@
+{
+    "firstName": "John",
+    "lastName": "Smith",
+    "languages": [
+        {
+            "title": "JS",
+            "level": "Junior"
+        },
+        {
+            "title": "C#",
+            "level": "Senior"
+        },
+        {
+            "title": "Python",
+            "level": "Junior"
+        }
+    ]
+}

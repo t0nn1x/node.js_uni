@@ -1,0 +1,24 @@
+{
+  "name": "lab-1",
+  "version": "1.0.0",
+  "description": "Lab-1 node.js",
+  "main": "task1.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/t0nn1x/node.js_uni.git"
+  },
+  "author": "t0nn1x",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/t0nn1x/node.js_uni/issues"
+  },
+  "homepage": "https://github.com/t0nn1x/node.js_uni#readme",
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "lodash": "^4.17.21",
+    "yargs": "^17.6.2"
+  }
+}
