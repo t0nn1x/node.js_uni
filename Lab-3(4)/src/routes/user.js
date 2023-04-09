@@ -15,6 +15,11 @@ router.get("/", async (req, res) => {
   }
 });
 
+// 7 (GET request) - get authorized user data
+router.get('/me', auth, async (req, res) => {
+  res.send(req.user);
+});
+
 // 2 (GET request) - get a user by id
 router.get("/:id", async (req, res) => {
   const userId = req.params.id;
@@ -88,59 +93,49 @@ router.delete("/:id", async (req, res) => {
 });
 
 // 6 (POST request) - login a user
-router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-
+router.post('/login', async (req, res) => {
   try {
-    const user = await User.findOne({ email });
-
+    const user = await User.findOne({ email: req.body.email });
     if (!user) {
-      throw new Error("Incorrect email");
+      return res.status(400).send({ error: 'Unable to login' });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-
+    const isMatch = await bcrypt.compare(req.body.password, user.password);
     if (!isMatch) {
-      throw new Error("Incorrect password");
+      return res.status(400).send({ error: 'Unable to login' });
     }
 
-    const token = jwt.sign({ _id: user._id.toString() }, "mysecretkey");
-
+    const token = jwt.sign({ _id: user._id.toString() }, 'secrettoken');
     user.tokens = user.tokens.concat({ token });
     await user.save();
 
     res.send({ user, token });
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).send(error);
   }
 });
 
-// 7 (GET request) - get a user's profile
-router.get('/login/me', auth, async (req, res) => {
-  res.send(req.user);
-});
-
-// 8 (POST request) - logout a user
+// 8 (POST request) - logout the user (remove the current token)
 router.post('/logout', auth, async (req, res) => {
   try {
     req.user.tokens = req.user.tokens.filter((token) => {
       return token.token !== req.token;
     });
     await req.user.save();
-    res.send();
+    res.send({ message: 'Logged out successfully' });
   } catch (error) {
-    res.status(500).send();
+    res.status(500).send(error);
   }
 });
 
-// 9 (POST request) - logout a user from all devices
+// 9 (POST request) - logout the user from all devices (remove all tokens)
 router.post('/logoutAll', auth, async (req, res) => {
   try {
     req.user.tokens = [];
     await req.user.save();
-    res.send();
+    res.send({ message: 'Logged out from all devices successfully' });
   } catch (error) {
-    res.status(500).send();
+    res.status(500).send(error);
   }
 });
 

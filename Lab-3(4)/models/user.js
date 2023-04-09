@@ -21,6 +21,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
     trim: true,
     lowercase: true,
     validate(value) {
@@ -28,7 +29,6 @@ const userSchema = new mongoose.Schema({
         throw new Error('Invalid email address');
       }
     },
-    unique: true
   },
   password: {
     type: String,
@@ -49,27 +49,16 @@ const userSchema = new mongoose.Schema({
   }]
 });
 
+// Hash the plaintext password before saving
 userSchema.pre('save', async function (next) {
   const user = this;
 
   if (user.isModified('password')) {
     user.password = await bcrypt.hash(user.password, 8);
   }
-  
+
   next();
 });
-
-
-userSchema.methods.toJSON = function () {
-  const user = this.toObject();
-
-  delete user.password;
-  delete user.tokens;
-
-  return user;
-};
-
-
 
 const User = mongoose.model('User', userSchema);
 
