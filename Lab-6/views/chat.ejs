@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lab 6 - Chat</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <div class="chat-container">
+      <div class="sidebar">
+        <h2 id="room-name"></h2>
+        <h3>Users</h3>
+        <ul class="users"></ul>
+        <button id="send-pm">Send Private Message</button>
+        <button id="view-pm">My Private Messages</button>
+      </div>
+
+      <div class="main">
+        <div class="chat-messages"></div>
+        <div class="typing-indicator"></div>
+        <form class="message-form">
+          <input
+            type="text"
+            name="message"
+            placeholder="Type a message"
+            autocomplete="off"
+            autofocus
+          />
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="send-pm-modal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Send Private Message</h2>
+        <form id="send-pm-form">
+          <label for="recipient">Recipient:</label>
+          <select name="recipient" id="recipient" required></select>
+          <label for="private-message">Message:</label>
+          <input
+            type="text"
+            name="private-message"
+            id="private-message"
+            required
+          />
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- My Private Messages Modal -->
+    <div id="view-pm-modal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>My Private Messages</h2>
+        <ul id="private-messages"></ul>
+      </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/modal.js"></script>
+  </body>
+</html>
